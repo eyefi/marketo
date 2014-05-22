@@ -36,7 +36,7 @@ If you store configuration in the environment you would create a new instance li
 
 ``` php
 <?php
-require('marketo.php');
+use Marketo\Marketo;
 $marketo_client = new Marketo($_ENV['MARKETO_USER_ID'], $_ENV['MARKETO_ENCRYPTION_KEY'], $_ENV['MARKETO_SOAP_HOST']);
 ```
 	
