@@ -1,3 +1,4 @@
 {
-  "name": "eyefi/marketo"
+  "name": "eyefi/marketo",
+  "type": "library"
 }
