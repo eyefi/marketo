@@ -1,4 +1,9 @@
 {
-  "name": "eyefi/marketo",
-  "type": "library"
+    "name": "eyefi/marketo",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    }
 }
