@@ -86,6 +86,8 @@ class Marketo
 	// 
 	// $cookie - Optional, The entire _mkto_trk cookie the lead will be associated with
 	// 
+	// $foreign_sys_id - Optional, Foreign system ID, such as a local user ID
+	//
 	// Examples
 	// 
 	// When no $lead_key or $cookie is given a new lead will be created
@@ -98,12 +100,12 @@ class Marketo
 	// `$client->sync_lead(array('Unsubscribed' => FALSE), 'ben@benubois.com', $_COOKIE['_mkto_trk']);`
 	// 
 	// Returns an object containing the lead info
-	public function sync_lead($lead, $lead_key = NULL, $cookie = NULL)
+	public function sync_lead($lead, $lead_key = NULL, $cookie = NULL, $foreign_sys_id = NULL)
 	{
 		$params = new stdClass;
 		$params->marketoCookie = $cookie;
 		$params->returnLead = TRUE;
-		$params->leadRecord = $this->lead_record($lead, $lead_key);
+		$params->leadRecord = $this->lead_record($lead, $lead_key, $foreign_sys_id);
 			
 		$result = $this->request('syncLead', $params);
 		
@@ -202,9 +204,10 @@ class Marketo
 	// $lead - Associative array of lead attributes
 	// $lead_key - Optional, The key being used to identify the lead, this can be 
 	// either an email or Marketo ID
+	// $foreign_sys_id - Optional, Foreign system ID, such as a local user ID
 	// 
 	// Returns an object with the prepared lead
-	protected function lead_record($lead_attributes, $lead_key = NULL)
+	protected function lead_record($lead_attributes, $lead_key = NULL, $foreign_sys_id = NULL)
 	{
 		$record = new stdClass;
 		
@@ -221,6 +224,12 @@ class Marketo
 			}
 		}
 		
+		if ($foreign_sys_id)
+		{
+			$record->ForeignSysPersonId = $foreign_sys_id;
+			$record->ForeignSysType = 'CUSTOM';
+		}
+
 		$record->leadAttributeList = new stdClass;
 		$record->leadAttributeList->attribute = array();
 
