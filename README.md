@@ -2,6 +2,23 @@
 
 A PHP client for the Marketo SOAP API.
 
+## Installation
+
+Add following line to your composer.json require:
+
+``` json
+"eyefi/marketo": "dev-master"
+``` 
+
+And the following to you composer.json repositories:
+
+``` json
+{
+  "type": "vcs",
+  "url": "https://github.com/eyefi/marketo"
+}
+```
+
 ## Usage
 
  - [get_lead_by](#getting-a-lead)
