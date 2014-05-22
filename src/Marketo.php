@@ -27,7 +27,7 @@ class Marketo
 		
 		$wsdl_url = $soap_end_point . '?WSDL';
 
-		$this->soap_client = new soapClient($wsdl_url, $options);
+		$this->soap_client = new \SoapClient($wsdl_url, $options);
 	}
 	
 	// Public: Get a lead record
@@ -51,8 +51,8 @@ class Marketo
 	// Returns an object containing lead data or FALSE if no lead was found
 	public function get_lead_by($type, $value)
 	{
-		$lead = new stdClass;
-		$lead->leadKey = new stdClass;
+		$lead = new \stdClass;
+		$lead->leadKey = new \stdClass;
 		$lead->leadKey->keyType  = strtoupper($type);
 		$lead->leadKey->keyValue = $value;
 
@@ -70,7 +70,7 @@ class Marketo
 			}
 			else
 			{
-				throw new Exception($e, 1);
+				throw new \Exception($e, 1);
 			}
 		}
 		
@@ -102,7 +102,7 @@ class Marketo
 	// Returns an object containing the lead info
 	public function sync_lead($lead, $lead_key = NULL, $cookie = NULL, $foreign_sys_id = NULL)
 	{
-		$params = new stdClass;
+		$params = new \stdClass;
 		$params->marketoCookie = $cookie;
 		$params->returnLead = TRUE;
 		$params->leadRecord = $this->lead_record($lead, $lead_key, $foreign_sys_id);
@@ -126,7 +126,7 @@ class Marketo
 	// Returns an object containing all the campaigns that are available from the API
 	public function get_campaigns($name = NULL)
 	{
-		$params = new stdClass;
+		$params = new \stdClass;
 		$params->source = 'MKTOWS';
 
 		if ($name)
@@ -176,14 +176,14 @@ class Marketo
 				foreach ($value as $type => $value){}
 			}
 			
-			$lead_key = new stdClass;
+			$lead_key = new \stdClass;
 			$lead_key->keyType  = strtoupper($type);
 			$lead_key->keyValue = $value;
 			
 			array_push($lead_keys, $lead_key);
 		}
 		
-		$params  = new stdClass;
+		$params  = new \stdClass;
 		$params->leadList = $lead_keys;
 		$params->source = 'MKTOWS';
 		
@@ -209,7 +209,7 @@ class Marketo
 	// Returns an object with the prepared lead
 	protected function lead_record($lead_attributes, $lead_key = NULL, $foreign_sys_id = NULL)
 	{
-		$record = new stdClass;
+		$record = new \stdClass;
 		
 		// Identify the lead if it is known
 		if ($lead_key)
@@ -230,7 +230,7 @@ class Marketo
 			$record->ForeignSysType = 'CUSTOM';
 		}
 
-		$record->leadAttributeList = new stdClass;
+		$record->leadAttributeList = new \stdClass;
 		$record->leadAttributeList->attribute = array();
 
 		foreach ($lead_attributes as $attribute => $value)
@@ -244,7 +244,7 @@ class Marketo
 				$type = 'boolean';
 			}
 
-			$lead_attribute = new stdClass;
+			$lead_attribute = new \stdClass;
 			$lead_attribute->attrName  = $attribute;
 			$lead_attribute->attrValue = $value;
 			$lead_attribute->attrType  = $type;
@@ -318,12 +318,12 @@ class Marketo
 		$encrypt_string = $timestamp . $this->user_id;
 		$signature      = hash_hmac('sha1', $encrypt_string, $this->encryption_key);
 		
-		$data = new stdClass;
+		$data = new \stdClass;
 		$data->mktowsUserId     = $this->user_id;
 		$data->requestSignature = $signature;
 		$data->requestTimestamp = $timestamp;
 		
-		$header = new SoapHeader('http://www.marketo.com/mktows/', 'AuthenticationHeader', $data);
+		$header = new \SoapHeader('http://www.marketo.com/mktows/', 'AuthenticationHeader', $data);
 		
 		return $header;
 	}
