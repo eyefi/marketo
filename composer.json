@@ -1,6 +1,7 @@
 {
     "name": "eyefi/marketo",
-    "type": "library",
+    "description": "A PHP client for the Marketo SOAP API.",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Marketo\\": "src/"
